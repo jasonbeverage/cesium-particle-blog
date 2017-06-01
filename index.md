@@ -8,7 +8,7 @@ Particle systems are a graphical technique that let you simulate complex physica
 
 ## Quick Start
 
-Let's get a simple particle system up and running with Cesium.  Open the [Hello World]("https://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Hello%20World.html") Sandcastle example.  Add this code to the example:
+Let's get a simple particle system up and running with Cesium.  Open the [Hello World](https://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Hello%20World.html) Sandcastle example.  Add this code to the example:
 
 ```
 var entity = viewer.entities.add({
