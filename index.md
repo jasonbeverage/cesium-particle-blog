@@ -18,23 +18,98 @@ var entity = viewer.entities.add({
 
     // Create a particle system
     particleSystem : {
-        image : '../../SampleData/fire.png'
+        image : '../../SampleData/fire.png',
+        rate: 50.0
     },
-
     position : Cesium.Cartesian3.fromDegrees(-112.110693, 36.0994841, 1000)
 });
 viewer.trackedEntity = entity;
 ```
 
 Cesium's particle systems work with the entity framework.  This code will load a 3D model of an airplane, and then attach a simple fire particle system to it.
+We're also setting the rate parameter so that the particle system will emit 50 particles every second.
 
-
-## The life of a particle
-
-Particles are born, react to forces such as gravity, wind, or attractive forces, and then die.  Cesium's particle system is modular and configurable, allowing you interactively generate effects.
 
 ## Emitters
 
-Different types of emitters.
+You'll see in the example that the particles start at the center of the model and shoot up.  When a particle is born, it's initial position and velocity vector are controlled by the ParticleEmitter that is attached to the particleSystem.  If no emitter is specified, a CircleEmitter will be created by default.
+
+Cesium has various ParticleEmitter's that you can use out of the box.
+
+**BoxEmitter**
+
+The BoxEmitter class initializes particles at random positions within a box and directs them outwards from the center of the box.
+
+```
+ particleSystem : {
+        image : '../../SampleData/fire.png',
+
+        rate: 50.0,
+
+        emitter: new Cesium.BoxEmitter({
+            width: 5.0,
+            height: 5.0,
+            depth: 5.0
+        })
+    }
+```
+
+**CircleEmitter**
+
+The CircleEmitter class initializes particles at random positions within a circle and directs them up.
+
+```
+ particleSystem : {
+        image : '../../SampleData/fire.png',
+
+        rate: 50.0,
+
+        emitter: new Cesium.CircleEmitter({
+            radius: 5.0
+        })
+    }
+```
+
+**ConeEmitter**
+
+The ConeEmitter class initializes particles at the tip of a cone and directs them at random angles out of the cone.
+
+```
+ particleSystem : {
+        image : '../../SampleData/fire.png',
+
+        rate: 50.0,
+
+        emitter: new Cesium.ConeEmitter({
+            radius: 5.0,
+            angle: Cesium.Math.toRadians(30.0)
+        })
+    }
+```
+
+**SphereEmitter**
+
+The SphereEmitter class initializes particles at random positions within a sphere and directs them outwards from the center of the sphere.
+
+```
+ particleSystem : {
+        image : '../../SampleData/fire.png',
+
+        rate: 50.0,
+
+        emitter: new Cesium.SphereEmitter({
+            radius: 5.0
+        })
+    }
+```
+
+## Particle Lifetime
+
+Particles are born, react to forces such as gravity, wind, or attractive forces, and then die.
+
+## Styling particles
+bursts, colors, etc.
+
+## Forces
 
 
