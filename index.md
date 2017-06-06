@@ -150,7 +150,7 @@ bursts: [
             {time: 5.0, min: 300, max: 500},
             {time: 10.0, min: 50, max: 100},
             {time: 15.0, min: 200, max: 300}
-        ],
+        ]
 ```
 
 These bursts will emit between min and max particles at the given times.
@@ -162,29 +162,11 @@ There are a few properties that control the lifetime of a particle system.  By d
 If you want a particle system to run for a specified amount of time and then stop, you can set the *lifetime* property to the number of seconds you want it to run and set the *loop* property to false.  For example, to run a particle system for 5 seconds and stop, you can do this:
 
 ```
-var entity = viewer.entities.add({
-    model : {
-        uri : '../../SampleData/models/CesiumAir/Cesium_Air.gltf',
-    },
+particleSystem : {
+    lifeTime: 5.0,
+    loop: false
+}
 
-    particleSystem : {
-        image : '../../SampleData/fire.png',
-
-        rate: 50.0,
-
-        emitter: new Cesium.ConeEmitter({
-            radius: 5.0,
-            angle: Cesium.Math.toRadians(30.0)
-        }),
-
-        lifeTime: 5.0,
-        loop: false,
-
-        emitterModelMatrix: Cesium.Matrix4.fromTranslation(new Cesium.Cartesian3(2.5, 4.0, 1.0)),
-    },
-
-    position : Cesium.Cartesian3.fromDegrees(-112.110693, 36.0994841, 1000)
-});
 ```
 
 Each particle emitted from the particle system will live for a random number of seconds between the **minLife** and **maxLife** properties of the particle system.  For example, to make a particle system where the particles live between 5 and 10 seconds you can do:
@@ -212,15 +194,15 @@ particleSystem : {
 ```
 
 ** Size **
-There are various settings we can use to control the size of the particles in a particle system.  The general size of a particle is controlled by the *minWidth*, *maxWidth*, *minHeight*, and *maxHeight* settings.  The particle will be born with a width in pixels between *minWidth* and *maxWidth* and a height between *minHeight* and *maxHeight*.
+There are various settings we can use to control the size of the particles in a particle system.  The general size of a particle is controlled by the *minimumWidth*, *maximumWidth*, *minimumHeight*, and *maximumHeight* settings.  The particle will be born with a width in pixels between *minimumWidth* and *maximumWidth* and a height between *minimumHeight* and *maximumHeight*.
 
 Let's make the particles have a size between 30 and 60 pixels.  Add the following to your particleSystem.
 ```
 particleSystem : {
-    minWidth: 30.0,
-    maxWidth: 60.0,
-    minHeight: 30.0,
-    maxHeight: 60.0
+    minimumWidth: 30.0,
+    maximumWidth: 60.0,
+    minimumHeight: 30.0,
+    maximumHeight: 60.0
 }
 ```
 
@@ -233,11 +215,11 @@ particleSystem : {
 ```
 
 ** Speed **
-While the emitter controls the initial position and velocity vector of the particle, how fast it actually goes is controlled by the *minSpeed* and *maxSpeed* settings.  Let's make our particles go between 5 and 10 and meters per second.
+While the emitter controls the initial position and velocity vector of the particle, how fast it actually goes is controlled by the *minimumSpeed* and *maximumSpeed* settings.  Let's make our particles go between 5 and 10 and meters per second.
 ```
 particleSystem : {
-    minSpeed: 5.0,
-    maxSpeed: 10.0
+    minimumSpeed: 5.0,
+    maximumSpeed: 10.0
 }
 ```
 
