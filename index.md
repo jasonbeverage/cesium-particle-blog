@@ -2,7 +2,6 @@
 
 *This tutorial will walk you through Cesium's particle system API and show you how you can add more realism and interesting special effects to your Cesium app.*
 
-Inline-style:
 ![Cesium Particles](cesium_particles.gif "Cesium Particles")
 
 ## What is a particle system?
