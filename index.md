@@ -156,9 +156,10 @@ bursts: [
 These bursts will emit between min and max particles at the given times.
 
 **Lifetime**
+
 There are a few properties that control the lifetime of a particle system.  By default, particle systems will run forever.
 
-If you want a particle system to run for a specified amount of time and then stop, you can set the **lifetime** property to the number of seconds you want it to run and set the *loop* property to false.  For example, to run a particle system for 5 seconds and stop, you can do this:
+If you want a particle system to run for a specified amount of time and then stop, you can set the *lifetime* property to the number of seconds you want it to run and set the *loop* property to false.  For example, to run a particle system for 5 seconds and stop, you can do this:
 
 ```
 var entity = viewer.entities.add({
@@ -186,11 +187,81 @@ var entity = viewer.entities.add({
 });
 ```
 
+Each particle emitted from the particle system will live for a random number of seconds between the **minLife** and **maxLife** properties of the particle system.  For example, to make a particle system where the particles live between 5 and 10 seconds you can do:
+```
+particleSystem : {
+    minLife: 5.0,
+    maxLife: 10.0
+}
+```
 
 
 ## Styling particles
-olors, etc.
+
+**Color**
+
+As we've already seen, the *image* property determines which texture to use for the particles.  That image can be modulated with a color, which can change over the particles lifetime, to produce a more interesting effect.
+
+For example, let's make the fire particles redish when they are born and then transition to a partially transparent yellow as they die.  Add the following settings to your particleSystem.
+
+```
+particleSystem : {
+    startColor: Cesium.Color.RED.withAlpha(0.7),
+    endColor: Cesium.Color.YELLOW.withAlpha(0.3)
+}
+```
+
+** Size **
+There are various settings we can use to control the size of the particles in a particle system.  The general size of a particle is controlled by the *minWidth*, *maxWidth*, *minHeight*, and *maxHeight* settings.  The particle will be born with a width in pixels between *minWidth* and *maxWidth* and a height between *minHeight* and *maxHeight*.
+
+Let's make the particles have a size between 30 and 60 pixels.  Add the following to your particleSystem.
+```
+particleSystem : {
+    minWidth: 30.0,
+    maxWidth: 60.0,
+    minHeight: 30.0,
+    maxHeight: 60.0
+}
+```
+
+You can also control the size of a particle during it's lifetime with the *startScale* and *endScale* properties.  This lets you make particles grow or shink over time.  Let's make the particles grow to 4x their start size as they age.  Add the following to your particleSystem.
+```
+particleSystem : {
+    startScale: 1.0,
+    endScale: 4.0
+}
+```
+
+** Speed **
+While the emitter controls the initial position and velocity vector of the particle, how fast it actually goes is controlled by the *minSpeed* and *maxSpeed* settings.  Let's make our particles go between 5 and 10 and meters per second.
+```
+particleSystem : {
+    minSpeed: 5.0,
+    maxSpeed: 10.0
+}
+```
 
 ## Forces
 
+You can create any number of interesting effects by applying forces to your particle system such as gravity or wind.  Each particle system has an array of force callbacks that allow you to modify properties of the particle during the simulation.  A force callback is a function that takes in a particle as well as the change in simulation time.  For physics based effects, you'll usually modify the velocity vector to change direction or speed.  Let's make the particle system react to gravity.  Add this function to your example:
+```
+var gravityScratch = new Cesium.Cartesian3();
+function applyGravity(p, dt) {
+    // We need to compute a local up vector for each particle in geocentric space.
+    var position = p.position;
+    Cesium.Cartesian3.normalize(position, gravityScratch);
+    Cesium.Cartesian3.multiplyByScalar(gravityScratch, -9.8 * dt, gravityScratch);
+    p.velocity = Cesium.Cartesian3.add(p.velocity, gravityScratch, p.velocity);
+}
+```
 
+This function computes a localized gravity vector for each particle, and uses the acceleration of gravity (-9.8 meters per second squared) to alter the velocity of the particle.
+
+Now add the force to the particle systems force array like this:
+```
+particleSystem: {
+	forces: [applyGravity]
+}
+```
+
+We can't wait to see what cool effects you build with Cesium's new particle system!
