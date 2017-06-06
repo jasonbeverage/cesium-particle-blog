@@ -169,11 +169,11 @@ particleSystem : {
 
 ```
 
-Each particle emitted from the particle system will live for a random number of seconds between the **minLife** and **maxLife** properties of the particle system.  For example, to make a particle system where the particles live between 5 and 10 seconds you can do:
+Each particle emitted from the particle system will live for a random number of seconds between the **minimumLife** and **maximumLife** properties of the particle system.  For example, to make a particle system where the particles live between 5 and 10 seconds you can do:
 ```
 particleSystem : {
-    minLife: 5.0,
-    maxLife: 10.0
+    minimumLife: 5.0,
+    maximumLife: 10.0
 }
 ```
 
