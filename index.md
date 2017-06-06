@@ -2,6 +2,9 @@
 
 *This tutorial will walk you through Cesium's particle system API and show you how you can add more realism and interesting special effects to your Cesium app.*
 
+Inline-style:
+![Cesium Particles](cesium_particles.gif "Cesium Particles")
+
 ## What is a particle system?
 
 Particle systems are a graphical technique that let you simulate complex physically based effects.  At their core, particle systems are a collection of small images that when viewed together form a more complex "fuzzy" object, such as fire, smoke, clouds, or fireworks.  You'll see examples of particle systems in movies and video games.  Imagine you want to represent damage to a plane.  You can use Cesium's particle system to display an explosion on the plane's engine, then render a different particle system representing a smoke trail from the plane as it crashes.
