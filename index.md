@@ -239,7 +239,11 @@ Each particle system has an array of force callbacks that modify properties of t
 ```
 var gravityScratch = new Cesium.Cartesian3();
 function applyGravity(p, dt) {
-    Cesium.Cartesian3.fromElements(0, -9.8 * dt, 0, gravityScratch);
+     // We need to compute a local up vector for each particle in geocentric space
+     Cesium.Cartesian3.fromElements(0, -9.8 * dt, 0, gravityScratch);
+     var position = p.position;		
+     Cesium.Cartesian3.normalize(position, gravityScratch);		
+     Cesium.Cartesian3.multiplyByScalar(gravityScratch, -9.8 * dt, gravityScratch);
     p.velocity = Cesium.Cartesian3.add(p.velocity, gravityScratch, p.velocity);
 }
 ```
