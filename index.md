@@ -1,12 +1,14 @@
 # Cesium Particle Systems
 
-*This tutorial will walk you through Cesium's particle system API and show you how you can add more realism and interesting special effects to your Cesium app.*
+*This tutorial will walk you through Cesium's particle system API and show you how to add more realism and interesting special effects to your Cesium app.*
 
 <p align="center"><img src="cesium_particles.gif"></p>
 
 ## What is a particle system?
 
-Particle systems are a graphical technique that let you simulate complex physically based effects.  At their core, particle systems are a collection of small images that when viewed together form a more complex "fuzzy" object, such as fire, smoke, clouds, or fireworks.  You'll see examples of particle systems in movies and video games.  Imagine you want to represent damage to a plane.  You can use Cesium's particle system to display an explosion on the plane's engine, then render a different particle system representing a smoke trail from the plane as it crashes.
+Particle systems are a graphical technique that simulates complex physically-based effects.  At their core, particle systems are collections of small images that when viewed together form a more complex "fuzzy" object, such as fire, smoke, clouds, or fireworks. These complex effects are controlled by specifying the behavior of individual particles using properties such as initial position, velocity and lifespan.
+
+Particle system effects are common in movies and video games.  For example, to represent damage to a plane a technical artist could use a particle system to represent an explosion on the plane's engine, then render a different particle system representing a smoke trail from the plane as it crashes.
 
 ## Quick Start
 
@@ -28,13 +30,13 @@ var entity = viewer.entities.add({
 viewer.trackedEntity = entity;
 ```
 
-Cesium's particle systems work with the entity framework.  This code will load a 3D model of an airplane, and then attach a simple fire particle system to it.  The image property defines what
+Cesium's particle systems work with the [entity framework](http://cesiumjs.org/tutorials/Visualizing-Spatial-Data/).  This code will load a 3D model of an airplane, and then attach a simple fire particle system to it.  The image property defines the appearance of a single particle.
 We're also setting the rate parameter so that the particle system will emit 50 particles every second.
 
 
 ## Emitters
 
-You'll see in the example that the particles start at the center of the model and shoot up.  When a particle is born, it's initial position and velocity vector are controlled by the ParticleEmitter that is attached to the particleSystem.  If no emitter is specified, a CircleEmitter will be created by default.
+When a particle is born, its initial position and velocity vector are controlled by the ParticleEmitter that is attached to the entity's particleSystem.  If no emitter is specified, a CircleEmitter will be created by default.
 
 Cesium has various ParticleEmitter's that you can use out of the box.
 
@@ -107,9 +109,9 @@ The SphereEmitter class initializes particles at random positions within a spher
 
 **Positioning Emitters**
 
-Particle systems are attached to it's parent entity and particles will be emitted from the entity's position.  It is also possible to position the emitter
-within the coordinate space of the entity.  For example, what if we want the fire particles to emit from the propeller of the plane instead of the center?
-We can use the emitterModelMatrix property of the ParticleSystem to accomplish this.  Change the entity creation code to the following:
+By default, particles emitters are positioned at the center of their parent entity. However, emitters can be positioned arbitrarily within the coordinate space of the entity.  For example, what if we want the fire particles to emit from the propeller of the plane instead of the center?
+
+We can use the emitterModelMatrix property of the ParticleSystem to specify the transform relative to the parent. Change the entity creation code to the following:
 
 ```
 var entity = viewer.entities.add({
@@ -137,13 +139,13 @@ var entity = viewer.entities.add({
 
 ## Configuring Particle Systems
 
-Cesium has numerous options for fine tuning how particle systems behave.
+Cesium has numerous options for fine-tuning particle behavior.
 
 **Particle emission rate**
 
 The *rate* property controls how many particles are emitted per second.
 
-You can also specify an array of *burst* objects to apply timed bursts of particles.  This is a great way to add some variety or explosions to your particle system.
+You can also specify an array of *burst* objects to emit bursts of particles at specified times.  This is a great way to add some variety or explosions to your particle system.
 
 Add this property to your particleSystem.
 
@@ -159,9 +161,9 @@ These bursts will emit between min and max particles at the given times.
 
 **Lifetime**
 
-There are a few properties that control the lifetime of a particle system.  By default, particle systems will run forever.
+A few properties control the lifetime of a particle system.  By default, particle systems will run forever.
 
-If you want a particle system to run for a specified amount of time and then stop, you can set the *lifetime* property to the number of seconds you want it to run and set the *loop* property to false.  For example, to run a particle system for 5 seconds and stop, you can do this:
+To make a particle system to run for a set duration, set the *lifetime* property to the desired duration in seconds nd set the *loop* property to false.  For example, to run a particle system for 5 seconds use:
 
 ```
 particleSystem : {
@@ -171,7 +173,7 @@ particleSystem : {
 
 ```
 
-Each particle emitted from the particle system will live for a random number of seconds between the **minimumLife** and **maximumLife** properties of the particle system.  For example, to make a particle system where the particles live between 5 and 10 seconds you can do:
+Each particle emitted will live for a random number of seconds between the **minimumLife** and **maximumLife** property values.  For example, to make particles live between 5 and 10 seconds, use:
 ```
 particleSystem : {
     minimumLife: 5.0,
@@ -184,9 +186,9 @@ particleSystem : {
 
 **Color**
 
-As we've already seen, the *image* property determines which texture to use for the particles.  That image can be modulated with a color, which can change over the particles lifetime, to produce a more interesting effect.
+In addition to the base particle texture specified with the *image* property, particles can be styled with a color which can change over the particles lifetime. This helps create more dynamic-looking effects.
 
-For example, let's make the fire particles redish when they are born and then transition to a partially transparent yellow as they die.  Add the following settings to your particleSystem.
+For example, the following code will make the fire particles redish when they are born and then transition to a partially transparent yellow as they die:
 
 ```
 particleSystem : {
@@ -196,9 +198,10 @@ particleSystem : {
 ```
 
 ** Size **
-There are various settings we can use to control the size of the particles in a particle system.  The general size of a particle is controlled by the *minimumWidth*, *maximumWidth*, *minimumHeight*, and *maximumHeight* settings.  The particle will be born with a width in pixels between *minimumWidth* and *maximumWidth* and a height between *minimumHeight* and *maximumHeight*.
 
-Let's make the particles have a size between 30 and 60 pixels.  Add the following to your particleSystem.
+The general size of a particle is controlled with the *minimumWidth*, *maximumWidth*, *minimumHeight*, and *maximumHeight* properties.  Each particle will be born with a width in pixels between *minimumWidth* and *maximumWidth* and a height between *minimumHeight* and *maximumHeight*.
+
+This will create particles with size between 30 and 60 pixels:
 ```
 particleSystem : {
     minimumWidth: 30.0,
@@ -208,7 +211,9 @@ particleSystem : {
 }
 ```
 
-You can also control the size of a particle during it's lifetime with the *startScale* and *endScale* properties.  This lets you make particles grow or shink over time.  Let's make the particles grow to 4x their start size as they age.  Add the following to your particleSystem.
+Like color, the size of a particle can be modulated over its lifetime with the *startScale* and *endScale* properties.  This lets you make particles grow or shink over time.  
+
+This code will make the particles grow to 4x their start size as they age:
 ```
 particleSystem : {
     startScale: 1.0,
@@ -217,7 +222,8 @@ particleSystem : {
 ```
 
 ** Speed **
-While the emitter controls the initial position and velocity vector of the particle, how fast it actually goes is controlled by the *minimumSpeed* and *maximumSpeed* settings.  Let's make our particles go between 5 and 10 and meters per second.
+
+While the emitter controls the initial position and direction of the particles, speed is controlled by the *minimumSpeed* and *maximumSpeed* settings.  Let's make our particles go between 5 and 10 and meters per second.
 ```
 particleSystem : {
     minimumSpeed: 5.0,
@@ -227,19 +233,18 @@ particleSystem : {
 
 ## Forces
 
-You can create any number of interesting effects by applying forces to your particle system such as gravity or wind.  Each particle system has an array of force callbacks that allow you to modify properties of the particle during the simulation.  A force callback is a function that takes in a particle as well as the change in simulation time.  For physics based effects, you'll usually modify the velocity vector to change direction or speed.  Let's make the particle system react to gravity.  Add this function to your example:
+To add to the realism of a effect, particle systems can also apply forces like gravity or wind.
+
+Each particle system has an array of force callbacks that modify properties of the particle during the simulation. A force callback is a function that takes in a particle and a simulation time step. Most physically-based effects will modify the velocity vector to change direction or speed.  Here's an example that will make particles react to gravity:
 ```
 var gravityScratch = new Cesium.Cartesian3();
 function applyGravity(p, dt) {
-    // We need to compute a local up vector for each particle in geocentric space.
-    var position = p.position;
-    Cesium.Cartesian3.normalize(position, gravityScratch);
-    Cesium.Cartesian3.multiplyByScalar(gravityScratch, -9.8 * dt, gravityScratch);
+    Cesium.Cartesian3.fromElements(0, -9.8 * dt, 0, gravityScratch);
     p.velocity = Cesium.Cartesian3.add(p.velocity, gravityScratch, p.velocity);
 }
 ```
 
-This function computes a localized gravity vector for each particle, and uses the acceleration of gravity (-9.8 meters per second squared) to alter the velocity of the particle.
+This function computes a gravity vector and uses the acceleration of gravity (-9.8 meters per second squared) to alter the velocity of the particle.
 
 Now add the force to the particle systems force array like this:
 ```
